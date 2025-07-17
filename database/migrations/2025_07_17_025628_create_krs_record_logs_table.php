@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('krs_record_logs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedBigInteger('id_krs')->nullable();
+            $table->string('nim_dinus', 50)->nullable();
+            $table->string('kdmk')->nullable();
+            $table->tinyInteger('aksi')->nullable();
+            $table->integer('id_jadwal')->nullable();
+            $table->string('ip_addr', 50)->nullable();
+            $table->timestamp('lastUpdate')->useCurrent();
+
+            $table->foreign('id_krs')->references('id')->on('krs_records')->onDelete('set null');
+            $table->foreign('nim_dinus')->references('nim_dinus')->on('mahasiswa_dinuses')->onDelete('set null');
+            $table->foreign('kdmk')->references('kdmk')->on('matkul_kurikulums')->onDelete('set null');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('krs_record_logs');
+    }
+};
