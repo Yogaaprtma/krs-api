@@ -1,8 +1,8 @@
 KRS API
-KRS API adalah aplikasi berbasis Laravel untuk mengelola Kartu Rencana Studi (KRS) mahasiswa. API ini memungkinkan mahasiswa untuk melihat KRS saat ini, mata kuliah yang tersedia, mendaftar mata kuliah, menghapus mata kuliah dari KRS, dan memeriksa status validasi KRS.
+KRS API adalah aplikasi berbasis Laravel untuk mengelola Kartu Rencana Studi (KRS) mahasiswa. API ini memungkinkan mahasiswa untuk mengakses KRS saat ini, melihat mata kuliah yang tersedia, mendaftar mata kuliah, menghapus mata kuliah dari KRS, dan memeriksa status validasi KRS.
 Tech Stack
 
-Framework: Laravel
+Framework: Laravel 8.x
 Database: MySQL
 Authentication: Laravel Sanctum (Token-based)
 Environment: PHP 8.x, Composer
@@ -72,7 +72,7 @@ Body (JSON):{
 
 Response:
 Success (200):{
-    "token": "string"
+    "token": "1|4D8WJmOvf2mDaf2Mf940hjnm1HykDAy77jo236oJ70fe49f5"
 }
 
 
@@ -96,7 +96,10 @@ Error (422):{
 
 
 KRS Endpoints (Require Authentication)
-Semua endpoint berikut memerlukan header Authorization: Bearer <token> dan Accept: application/json.
+Semua endpoint berikut memerlukan header:
+Accept: application/json
+Authorization: Bearer <token>
+
 
 GET /api/students/{nim}/krs/current
 
@@ -237,8 +240,10 @@ Untuk pengujian lokal, hapus validasi KRS atau KRS yang ada jika diperlukan:php 
 Notes
 
 Pastikan database terisi dengan data seeder (MahasiswaDinusSeeder, dll.).
-Jika kolom prodi tidak ada di tabel matkul_kurikulums, jalankan migrasi untuk menambahkannya.
-Untuk pengujian lokal, pemeriksaan validasi KRS dan konflik jadwal dinonaktifkan.
+Jika kolom prodi tidak ada di tabel matkul_kurikulums, jalankan migrasi:php artisan make:migration add_prodi_to_matkul_kurikulums_table
+
+
+Pemeriksaan validasi KRS dan konflik jadwal dinonaktifkan di lingkungan lokal untuk memudahkan pengujian.
 
 Troubleshooting
 
