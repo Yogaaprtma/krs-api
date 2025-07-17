@@ -37,7 +37,7 @@ class KrsRecordSeeder extends Seeder
             [
                 'id' => 3,
                 'ta' => '20232',
-                'kdmk' => 'A11.44213',
+                'kdmk' => 'B12.6206',
                 'id_jadwal' => 3,
                 'nim_dinus' => 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6',
                 'sts' => 'B',

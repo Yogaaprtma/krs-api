@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('kdmk', 20)->nullable();
             $table->char('nl', 2)->nullable();
             $table->smallInteger('hide')->default(0);
+            $table->timestamps();
 
             $table->foreign('nim_dinus')->references('nim_dinus')->on('mahasiswa_dinuses')->onDelete('cascade');
             $table->foreign('kdmk')->references('kdmk')->on('matkul_kurikulums')->onDelete('cascade');

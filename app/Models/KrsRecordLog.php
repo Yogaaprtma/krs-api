@@ -16,7 +16,6 @@ class KrsRecordLog extends Model
         'aksi', 
         'id_jadwal', 
         'ip_addr', 
-        'lastUpdate'
     ];
 
     public function krsRecord()

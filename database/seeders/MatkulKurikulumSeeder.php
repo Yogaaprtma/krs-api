@@ -26,7 +26,7 @@ class MatkulKurikulumSeeder extends Seeder
                 'smt' => 6,
                 'jns_smt' => 2,
                 'aktif' => 1,
-                'kur_nama' => 'Z11.KUR.2021/2022',
+                'kur_nama' => 'A11.KUR.2021/2022',
                 'kelompok_makul' => 'MKK',
                 'kur_aktif' => 1,
                 'jenis_matkul' => 'wajib'
@@ -43,16 +43,16 @@ class MatkulKurikulumSeeder extends Seeder
                 'smt' => 6,
                 'jns_smt' => 2,
                 'aktif' => 1,
-                'kur_nama' => 'Z11.KUR.2021/2022',
+                'kur_nama' => 'A11.KUR.2021/2022',
                 'kelompok_makul' => 'MKK',
                 'kur_aktif' => 1,
                 'jenis_matkul' => 'wajib'
             ],
             [
                 'id' => 3,
-                'kdmk' => 'A11.44213',
-                'nmmk' => 'SISTEM BASIS DATA',
-                'nmen' => 'Database Systems',
+                'kdmk' => 'B12.6206',
+                'nmmk' => 'PEMROGRAMAN WEB',
+                'nmen' => 'Web Programming',
                 'tp' => 'T',
                 'sks' => 3,
                 'sks_t' => 2,
@@ -60,10 +60,10 @@ class MatkulKurikulumSeeder extends Seeder
                 'smt' => 6,
                 'jns_smt' => 2,
                 'aktif' => 1,
-                'kur_nama' => 'Z11.KUR.2021/2022',
-                'kelompok_makul' => 'MKK',
+                'kur_nama' => 'B12.KUR.2023/2024',
+                'kelompok_makul' => 'MKB',
                 'kur_aktif' => 1,
-                'jenis_matkul' => 'wajib'
+                'jenis_matkul' => 'wajib',
             ],
             [
                 'id' => 4,
@@ -77,7 +77,7 @@ class MatkulKurikulumSeeder extends Seeder
                 'smt' => 6,
                 'jns_smt' => 2,
                 'aktif' => 1,
-                'kur_nama' => 'Z12.KUR.2021/2022',
+                'kur_nama' => 'B12.KUR.2021/2022',
                 'kelompok_makul' => 'MKK',
                 'kur_aktif' => 1,
                 'jenis_matkul' => 'pilihan'
@@ -94,7 +94,7 @@ class MatkulKurikulumSeeder extends Seeder
                 'smt' => 6,
                 'jns_smt' => 2,
                 'aktif' => 1,
-                'kur_nama' => 'Z12.KUR.2021/2022',
+                'kur_nama' => 'B12.KUR.2021/2022',
                 'kelompok_makul' => 'MKK',
                 'kur_aktif' => 1,
                 'jenis_matkul' => 'wajib'

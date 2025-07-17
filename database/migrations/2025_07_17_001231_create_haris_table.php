@@ -15,6 +15,7 @@ return new class extends Migration
             $table->tinyInteger('id')->primary();
             $table->string('nama', 6);
             $table->string('nama_en', 20);
+            $table->timestamps();
         });
     }
 

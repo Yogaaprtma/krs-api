@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('luas', 5)->default('0');
             $table->string('kondisi', 50)->nullable();
             $table->integer('jumlah')->nullable();
+            $table->timestamps();
         });
     }
 

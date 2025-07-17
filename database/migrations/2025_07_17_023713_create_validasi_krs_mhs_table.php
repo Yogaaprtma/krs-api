@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('job_host')->nullable();
             $table->string('job_agent')->nullable();
             $table->string('ta')->nullable();
+            $table->timestamps();
 
             $table->foreign('nim_dinus')->references('nim_dinus')->on('mahasiswa_dinuses')->onDelete('cascade');
             $table->foreign('ta')->references('kode')->on('tahun_ajarans')->onDelete('cascade');

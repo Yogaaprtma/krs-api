@@ -16,7 +16,7 @@ class IpSemesterSeeder extends Seeder
         IpSemester::insert([
             [
                 'id' => 1,
-                'ta' => '20232',
+                'ta' => '20231',
                 'nim_dinus' => '8360e9c2d67de5b82c7ada148e2aada2',
                 'sks' => 19,
                 'ips' => '3.24',

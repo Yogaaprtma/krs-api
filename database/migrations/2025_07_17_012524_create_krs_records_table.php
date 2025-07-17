@@ -20,6 +20,7 @@ return new class extends Migration
             $table->char('sts', 1);
             $table->integer('sks');
             $table->tinyInteger('modul')->default(0);
+            $table->timestamps();
 
             $table->foreign('ta')->references('kode')->on('tahun_ajarans')->onDelete('cascade');
             $table->foreign('kdmk')->references('kdmk')->on('matkul_kurikulums')->onDelete('cascade');

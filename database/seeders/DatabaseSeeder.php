@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ValidasiKrsMhsSeeder::class,
             IpSemesterSeeder::class,
             KrsRecordLogSeeder::class,
+            SesiKuliahBentrokSeeder::class,
         ]);
     }
 }

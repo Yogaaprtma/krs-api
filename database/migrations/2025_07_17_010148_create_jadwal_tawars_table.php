@@ -32,6 +32,7 @@ return new class extends Migration
             $table->unsignedInteger('id_ruang3');
             $table->tinyInteger('jns_jam');
             $table->tinyInteger('open_class')->default(1);
+            $table->timestamps();
 
             $table->foreign('ta')->references('kode')->on('tahun_ajarans')->onDelete('cascade');
             $table->foreign('kdmk')->references('kdmk')->on('matkul_kurikulums')->onDelete('cascade');

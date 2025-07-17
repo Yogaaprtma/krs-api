@@ -61,7 +61,7 @@ class JadwalTawarSeeder extends Seeder
             [
                 'id' => 3,
                 'ta' => '20232',
-                'kdmk' => 'A11.44213',
+                'kdmk' => 'B12.6206',
                 'klpk' => 'A11.4',
                 'klpk_2' => null,
                 'kdds' => 1949,

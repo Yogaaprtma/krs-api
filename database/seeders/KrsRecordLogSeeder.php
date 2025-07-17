@@ -22,7 +22,6 @@ class KrsRecordLogSeeder extends Seeder
                 'aksi' => 1,
                 'id_jadwal' => 1,
                 'ip_addr' => '127.0.0.1',
-                'lastUpdate' => now()
             ],
             [
                 'id' => 2,
@@ -32,17 +31,15 @@ class KrsRecordLogSeeder extends Seeder
                 'aksi' => 1,
                 'id_jadwal' => 2,
                 'ip_addr' => '127.0.0.1',
-                'lastUpdate' => now()
             ],
             [
                 'id' => 3,
                 'id_krs' => 3,
                 'nim_dinus' => 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6',
-                'kdmk' => 'A11.44213',
+                'kdmk' => 'B12.6206',
                 'aksi' => 1,
                 'id_jadwal' => 3,
                 'ip_addr' => '127.0.0.1',
-                'lastUpdate' => now()
             ],
             [
                 'id' => 4,
@@ -52,7 +49,6 @@ class KrsRecordLogSeeder extends Seeder
                 'aksi' => 1,
                 'id_jadwal' => 4,
                 'ip_addr' => '127.0.0.1',
-                'lastUpdate' => now()
             ],
             [
                 'id' => 5,
@@ -62,7 +58,6 @@ class KrsRecordLogSeeder extends Seeder
                 'aksi' => 1,
                 'id_jadwal' => 5,
                 'ip_addr' => '127.0.0.1',
-                'lastUpdate' => now()
             ]
         ]);
     }

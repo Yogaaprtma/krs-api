@@ -20,6 +20,7 @@ return new class extends Migration
             $table->tinyInteger('kelas');
             $table->char('akdm_stat', 2);
             $table->index('akdm_stat', 'STS_AKD_MHS');
+            $table->timestamps();
         });
     }
 

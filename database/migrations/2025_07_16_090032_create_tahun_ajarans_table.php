@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('added_id', 18)->nullable();
             $table->string('added_host', 18)->nullable();
             $table->date('tgl_masuk')->nullable();
+            $table->timestamps();
         });
     }
 

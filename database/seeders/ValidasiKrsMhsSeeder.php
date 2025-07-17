@@ -14,14 +14,14 @@ class ValidasiKrsMhsSeeder extends Seeder
     public function run(): void
     {
         ValidasiKrsMhs::insert([
-            [
-                'id' => 1,
-                'nim_dinus' => '8360e9c2d67de5b82c7ada148e2aada2',
-                'job_date' => '2024-02-20 08:00:55',
-                'job_host' => '119.47.90.27',
-                'job_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-                'ta' => '20232'
-            ],
+            // [
+            //     'id' => 1,
+            //     'nim_dinus' => '8360e9c2d67de5b82c7ada148e2aada2',
+            //     'job_date' => '2024-02-20 08:00:55',
+            //     'job_host' => '119.47.90.27',
+            //     'job_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+            //     'ta' => '20232'
+            // ],
             [
                 'id' => 2,
                 'nim_dinus' => 'f02c40967e21c126e6e49bc779f2c58c',

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('matkul_kurikulums', function (Blueprint $table) {
             $table->increments('id');
             $table->string('kdmk')->unique();
-            $table->string('prodi')->nullable();
             $table->string('nmmk');
             $table->string('nmen');
             $table->enum('tp', ['T', 'P', 'TP']);
@@ -28,6 +27,7 @@ return new class extends Migration
             $table->enum('kelompok_makul', ['MPK', 'MKK', 'MKB', 'MKD', 'MBB', 'MPB']);
             $table->boolean('kur_aktif');
             $table->enum('jenis_matkul', ['wajib', 'pilihan']);
+            $table->timestamps();
         });
     }
 

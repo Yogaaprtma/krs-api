@@ -19,6 +19,7 @@ return new class extends Migration
             $table->time('jam_selesai')->nullable();
             $table->integer('status')->default(1);
             $table->unique(['jam_mulai', 'jam_selesai'], 'jam_unik');
+            $table->timestamps();
         });
     }
 

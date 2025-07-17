@@ -19,7 +19,7 @@ return new class extends Migration
             $table->tinyInteger('aksi')->nullable();
             $table->integer('id_jadwal')->nullable();
             $table->string('ip_addr', 50)->nullable();
-            $table->timestamp('lastUpdate')->useCurrent();
+            $table->timestamps();
 
             $table->foreign('id_krs')->references('id')->on('krs_records')->onDelete('set null');
             $table->foreign('nim_dinus')->references('nim_dinus')->on('mahasiswa_dinuses')->onDelete('set null');

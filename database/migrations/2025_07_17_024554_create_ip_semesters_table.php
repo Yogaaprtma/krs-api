@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('sks');
             $table->string('ips', 5);
             $table->dateTime('last_update')->nullable();
+            $table->timestamps();
 
             $table->foreign('ta')->references('kode')->on('tahun_ajarans')->onDelete('cascade');
             $table->foreign('nim_dinus')->references('nim_dinus')->on('mahasiswa_dinuses')->onDelete('cascade');

@@ -1,6 +1,5 @@
 <?php
 
-// app/Services/KrsService.php
 namespace App\Services;
 
 use App\Models\KrsRecord;
@@ -13,6 +12,8 @@ use Illuminate\Http\Request;
 use App\Models\MahasiswaDinus;
 use App\Models\ValidasiKrsMhs;
 use App\Models\MatkulKurikulum;
+use App\Models\SesiKuliahBentrok;
+use Illuminate\Support\Facades\Log;
 
 class KrsService
 {
@@ -29,6 +30,7 @@ class KrsService
             ->get();
     }
 
+    // coba
     public function getAvailableCourses($nim)
     {
         $student = MahasiswaDinus::where('nim_dinus', $nim)->first();
@@ -49,24 +51,30 @@ class KrsService
             ->where('nl', 'A')
             ->pluck('kdmk');
 
-        // Pindahkan pemeriksaan prodi ke luar whereHas
-        $availableCourses = JadwalTawar::where('ta', $activeTa->kode)
-            ->whereHas('matkulKurikulum', function ($query) {
-                $query->where('kur_aktif', 1);
-            })
-            ->where('kdmk', function ($query) use ($student) {
-                $query->select('kdmk')
-                    ->from('matkul_kurikulums')
-                    ->where('prodi', $student->prodi);
+        $query = JadwalTawar::where('ta', $activeTa->kode)
+            ->whereHas('matkulKurikulum', function ($query) use ($student) {
+                $query->where('kur_aktif', 1)
+                      ->where('kur_nama', 'LIKE', $student->prodi . '.KUR%');
             })
             ->whereNotIn('kdmk', $passedCourses)
             ->where('jsisa', '>', 0)
             ->where('open_class', 1)
             ->whereNotIn('id', $existingKrs)
-            ->with(['matkulKurikulum', 'hari1', 'sesi1'])
-            ->get()
+            ->with(['matkulKurikulum', 'hari1', 'sesi1', 'hari2', 'sesi2', 'hari3', 'sesi3']);
+
+        Log::info('Available Courses Query', [
+            'nim' => $nim,
+            'ta' => $activeTa->kode,
+            'prodi' => $student->prodi,
+            'existing_krs' => $existingKrs->toArray(),
+            'passed_courses' => $passedCourses->toArray(),
+            'query_result' => $query->get()->toArray(),
+        ]);
+
+        $availableCourses = $query->get()
             ->filter(function ($jadwal) use ($existingKrs) {
                 $existingSchedules = JadwalTawar::whereIn('id', $existingKrs)
+                    ->with(['sesi1', 'sesi2', 'sesi3'])
                     ->get()
                     ->flatMap(function ($schedule) {
                         $slots = [];
@@ -80,7 +88,7 @@ class KrsService
                             $slots[] = ['hari' => $schedule->id_hari3, 'sesi' => $schedule->id_sesi3];
                         }
                         return $slots;
-                    })->keyBy('hari');
+                    });
 
                 $newScheduleSlots = [];
                 if ($jadwal->id_hari1 && $jadwal->id_sesi1) {
@@ -93,13 +101,29 @@ class KrsService
                     $newScheduleSlots[] = ['hari' => $jadwal->id_hari3, 'sesi' => $jadwal->id_sesi3];
                 }
 
-                foreach ($newScheduleSlots as $slot) {
-                    if (isset($existingSchedules[$slot['hari']]) && $existingSchedules[$slot['hari']]['sesi'] == $slot['sesi']) {
-                        return false;
+                foreach ($newScheduleSlots as $newSlot) {
+                    foreach ($existingSchedules as $existingSlot) {
+                        if ($newSlot['hari'] == $existingSlot['hari']) {
+                            $conflict = SesiKuliahBentrok::where('id', $newSlot['sesi'])
+                                ->where('id_bentrok', $existingSlot['sesi'])
+                                ->exists();
+                            if ($conflict) {
+                                Log::info('Schedule conflict detected', [
+                                    'jadwal_id' => $jadwal->id,
+                                    'new_slot' => $newSlot,
+                                    'existing_slot' => $existingSlot,
+                                ]);
+                                return false;
+                            }
+                        }
                     }
                 }
                 return true;
             });
+
+        Log::info('Filtered Available Courses', [
+            'result' => $availableCourses->toArray(),
+        ]);
 
         return $availableCourses;
     }
@@ -123,15 +147,24 @@ class KrsService
             ->first();
 
         if (!$jadwal) {
-            throw new \Exception('Schedule not available', 404);
+            throw new \Exception('Schedule not available or class is full', 404);
         }
 
         $krsValidated = ValidasiKrsMhs::where('nim_dinus', $nim)
             ->where('ta', $activeTa->kode)
             ->exists();
 
-        if ($krsValidated && app()->environment('production')) {
+        if ($krsValidated) {
             throw new \Exception('KRS already validated', 403);
+        }
+
+        $matkul = MatkulKurikulum::where('kdmk', $jadwal->kdmk)
+            ->where('kur_aktif', 1)
+            ->where('kur_nama', 'LIKE', $student->prodi . '.KUR%')
+            ->first();
+
+        if (!$matkul) {
+            throw new \Exception('Course not in student\'s curriculum', 403);
         }
 
         $existingKrs = KrsRecord::where('nim_dinus', $nim)
@@ -152,7 +185,7 @@ class KrsService
                     $slots[] = ['hari' => $schedule->id_hari3, 'sesi' => $schedule->id_sesi3];
                 }
                 return $slots;
-            })->keyBy('hari');
+            });
 
         $newScheduleSlots = [];
         if ($jadwal->id_hari1 && $jadwal->id_sesi1) {
@@ -165,22 +198,17 @@ class KrsService
             $newScheduleSlots[] = ['hari' => $jadwal->id_hari3, 'sesi' => $jadwal->id_sesi3];
         }
 
-        // Nonaktifkan pemeriksaan konflik untuk pengujian lokal
-        if (app()->environment('production')) {
-            foreach ($newScheduleSlots as $slot) {
-                if (isset($existingSchedules[$slot['hari']]) && $existingSchedules[$slot['hari']]['sesi'] == $slot['sesi']) {
-                    throw new \Exception('Schedule conflict', 403);
+        foreach ($newScheduleSlots as $newSlot) {
+            foreach ($existingSchedules as $existingSlot) {
+                if ($newSlot['hari'] == $existingSlot['hari']) {
+                    $conflict = SesiKuliahBentrok::where('id', $newSlot['sesi'])
+                        ->where('id_bentrok', $existingSlot['sesi'])
+                        ->exists();
+                    if ($conflict) {
+                        throw new \Exception('Schedule conflict detected', 403);
+                    }
                 }
             }
-        }
-
-        $matkul = MatkulKurikulum::where('kdmk', $jadwal->kdmk)
-            ->where('kur_aktif', 1)
-            ->where('prodi', $student->prodi) // Tambahkan pemeriksaan prodi
-            ->first();
-
-        if (!$matkul) {
-            throw new \Exception('Course not in curriculum', 403);
         }
 
         $krs = KrsRecord::create([
@@ -233,10 +261,14 @@ class KrsService
             ->first();
 
         if (!$krs) {
-            throw new \Exception('KRS record not found', 404);
+            throw new \Exception('KRS record not found for this schedule', 404);
         }
 
         $jadwal = JadwalTawar::find($scheduleId);
+        if (!$jadwal) {
+            throw new \Exception('Schedule not found', 404);
+        }
+
         $jadwal->increment('jsisa');
 
         KrsRecordLog::create([
@@ -281,7 +313,7 @@ class KrsService
         return [
             'validation_status' => $validationStatus ? 'Validated' : 'Not Validated',
             'total_sks' => $totalSks,
-            'previous_ips' => $previousIps ? $previousIps->ips : null,
+            'previous_ips' => $previousIps ? $previousIps->ips : 'N/A',
         ];
     }
 }
