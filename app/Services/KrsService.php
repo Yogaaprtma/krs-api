@@ -30,7 +30,6 @@ class KrsService
             ->get();
     }
 
-    // coba
     public function getAvailableCourses($nim)
     {
         $student = MahasiswaDinus::where('nim_dinus', $nim)->first();
